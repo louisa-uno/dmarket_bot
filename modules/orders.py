@@ -194,7 +194,7 @@ class OrderAnalytics:
                 # logger.info(f'{skin.title} {skin.bestOrder} {skin.minPrice} {skin.maxPrice}')
                 # SelectSkinOrder.create_skin(skin)
                 new_skins.append(skin)
-        logger.debug(f'База ордеров обновлялась {round(time() - t, 2)} сек.')
+        logger.debug(f'Database of orders was updated {round(time() - t, 2)} sec.')
         return new_skins
 
 
@@ -279,4 +279,4 @@ class Orders:
                                 await self.bot.delete_target([i])
                                 await self.create_order(j)
 
-        logger.debug(f'Обновление ордеров шло {round(time() - t, 2)} сек.')
+        logger.debug(f'Orders were updated {round(time() - t, 2)} sec.')
