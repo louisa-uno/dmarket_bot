@@ -1,0 +1,8 @@
+/venv
+.idea/
+__pycache__/
+*.db
+*.log
+credentials.py
+test_logger.py
+test.py
