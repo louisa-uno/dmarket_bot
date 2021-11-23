@@ -49,16 +49,16 @@ class BuyParams:
     ALL_SALES = 80
     DAYS_COUNT = 23
     SALE_COUNT = 11
-    LAST_SALE = 3  # Последняя продажа не позднее LAST_SALE дней назад
-    FIRST_SALE = 20  # Первая покупка не позже FIRST_SALE дней назад
+    LAST_SALE = 3  # Last sale no later than LAST_SALE days ago
+    FIRST_SALE = 20  # First purchase no later than FIRST_SALE days ago
 
     MAX_COUNT_SELL_OFFERS = 20
 
     BOOST_PERCENT = 24
     BOOST_POINTS = 3
 
-    MAX_THRESHOLD = 0.1  # Максимальное повышение цены на MAX_THRESHOLD процентов от текущего ордера
-    MIN_THRESHOLD = 3  # Максимальное понижение цены на MIN_THRESHOLD процентов от текущего ордера
+    MAX_THRESHOLD = 0.1  # Maximum price increase for MAX_THRESHOLD in percent of the current order
+    MIN_THRESHOLD = 3  # Minimum price decrease by MIN_THRESHOLD in percent of the current order
 
 
 class SellParams:
