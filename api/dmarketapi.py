@@ -61,7 +61,7 @@ class DMarketApi:
 
     async def validate_response(self, response: aiohttp.ClientResponse or requests.Response) -> dict:
         """
-        Проверяет ответ на наличие ошибок.
+        Checks the response for errors.
         :param response: Received response.
         :raises BadAPIKey: Bad api key used.
         :return: JSON like dict from response.
@@ -143,7 +143,7 @@ class DMarketApi:
     # ------------------------------------------------------------------
 
     async def last_sales(self, item_name: str, game: Games = Games.CS, currency: str = 'USD') -> LastSales:
-        """Метод для получения и обработки ответа для последних продаж."""
+        """Method for receiving and processing a response for recent sales."""
 
         method = 'GET'
         params = {'GameID': game.value, 'Title': item_name, 'Currency': currency}
@@ -155,7 +155,7 @@ class DMarketApi:
 
     async def sales_history(self, item_name: str, game: Games = Games.CS, currency: str = 'USD',
                             period: str = '1M') -> SalesHistory:
-        """Метод для получения и обработки ответа для последних продаж."""
+        """Method for receiving and processing a response for recent sales."""
 
         method = 'GET'
         params = {'GameID': game.value, 'Title': item_name, 'Currency': currency, 'Period': period}
