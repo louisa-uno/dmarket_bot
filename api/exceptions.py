@@ -13,7 +13,7 @@ class BadAPIKeyException(Error):
     """Bad api key exception."""
 
     def __init__(self):
-        logger.error('Bad API key used or Unauthorized')
+        logger.error('Bad API key used or Unauthorized'+Error)
 
 
 class WrongResponseException(Error):
