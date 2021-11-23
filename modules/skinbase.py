@@ -67,7 +67,7 @@ class SkinBase:
             except Exception as e:
                 logger.error(f'Exception in skin base{e}')
             if count % 500 == 0:
-                logger.debug(f'Игра {game}. Проанализировано {count} скинов.')
+                logger.debug(f'Game: {game}. Parsed {count} skins/items.')
             count += 1
         return s
 
@@ -79,7 +79,7 @@ class SkinBase:
             skins = [s for s in skins if not self.select_skin.skin_existence(s)]
             final_skins += await self.filter_skins(skins, self.min_price, self.max_price)
         self.select_skin.create_all_skins(final_skins)
-        logger.info(f'Всего проанализировано скинов: {len(final_skins)}')
+        logger.info(f'Total skins analyzed: {len(final_skins)}')
 
     async def update(self):
         now = time()
@@ -87,7 +87,7 @@ class SkinBase:
         skins_to_update = [s for s in self.select_skin.select_update_time(now, self.repeat)
                            if self.min_price_buy < s.avg_price < self.max_price_buy]
         if not skins_to_update:
-            logger.info('Нет скинов для обновления')
+            logger.info('No skins to update are available.')
         skins = await self.filter_skins(skins_to_update, self.min_price, self.max_price)
         self.select_skin.find_by_name(skins)
-        logger.info(f'База скинов обновлялась {round((time() - now) / 60, 2)} минут.')
+        logger.info(f'The skin/item database was updated {round((time() - now) / 60, 2)} minutes.')
