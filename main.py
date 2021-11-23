@@ -15,14 +15,14 @@ offers = Offers(bot)
 
 
 async def create_pre_base():
-    """Создание первичной базы предметов"""
+    """Creating a primary database of items"""
     while True:
-        logger.info('Обработка базы скинов')
+        logger.info('Skin database processing')
         try:
             await skin_base.update()
             await asyncio.sleep(skin_base.repeat)
         except Exception as e:
-            logger.exception(f' Не удалось обновить первичную базу: {e}. Спим 5 секунд.')
+            logger.exception(f' Failed to update primary: {e}. Sleep for 5 seconds.')
             await asyncio.sleep(5)
 
 
@@ -39,10 +39,10 @@ async def orders_loop():
                 targets = await orders.bot.user_targets(limit='1000')
                 targets_inactive = await orders.bot.user_targets(limit='1000', status='TargetStatusInactive')
                 await orders.bot.delete_target(targets.Items + targets_inactive.Items)
-                logger.debug('Не хватает денег для выставления ордеров, откладываем аналитику')
+                logger.debug('There is not enough balance available to place orders, we postpone analytics')
                 await asyncio.sleep(60 * 5)
         except Exception as e:
-            logger.error(f' Не удалось получить базу ордеров: {e}. Спим 30 секунд.')
+            logger.error(f' Failed to update database of orders: {e}. Sleep for 30 seconds.')
             await asyncio.sleep(5)
 
 
@@ -53,7 +53,7 @@ async def history_loop():
             await history.save_skins()
             await asyncio.sleep(60*15)
         except Exception as e:
-            logger.error(f' Не удалось получить историю: {e}. Спим 10 секунд.')
+            logger.error(f' Failed to fetch history: {e}. Sleep for 10 seconds.')
             await asyncio.sleep(30)
 
 
@@ -63,7 +63,7 @@ async def add_to_sell_loop():
             await offers.add_to_sell()
             await asyncio.sleep(60*10)
         except Exception as e:
-            logger.error(f' Не удалось выставить на продажу: {e}. Спим 10 секунд.')
+            logger.error(f' Failed to list skin/item for sale: {e}. Sleep for 10 seconds.')
             await asyncio.sleep(30)
 
 
@@ -73,7 +73,7 @@ async def update_offers_loop():
             await offers.update_offers()
             await asyncio.sleep(5)
         except Exception as e:
-            logger.error(f' Не удалось обновить продаваемые предметы: {e}. Спим 10 секунд.')
+            logger.error(f' Failed to update sellable skins/items: {e}. Sleep for 10 seconds.')
             await asyncio.sleep(30)
 
 
@@ -83,7 +83,7 @@ async def delete_offers_loop():
             await asyncio.sleep(60*60*24*2)
             await offers.delete_all_offers()
         except Exception as e:
-            logger.error(f'Не удалось удалить офферы: {e}')
+            logger.error(f'Failed to delete offers: {e}')
             await asyncio.sleep(30)
 
 
@@ -101,12 +101,12 @@ async def main_loop():
 
 def main():
     try:
-        logger.info('Запуск бота')
+        logger.info('The bot is launching')
         loop = asyncio.get_event_loop()
         loop.run_until_complete(main_loop())
     except KeyboardInterrupt:
         asyncio.run(bot.close())
-        logger.info('Good bye')
+        logger.info('The bot is shutting down')
 
 
 if __name__ == '__main__':
