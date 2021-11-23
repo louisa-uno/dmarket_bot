@@ -17,7 +17,7 @@ class BadAPIKeyException(Error):
 
 
 class WrongResponseException(Error):
-    """Получен некорректный ответ от сервера."""
+    """An invalid response was received from the server"""
 
     def __init__(self, response_text: str):
         """
@@ -28,7 +28,7 @@ class WrongResponseException(Error):
 
 
 class UnknownError(Error):
-    """Произошла неизвестная ошибка."""
+    """A unknown error occured."""
 
     def __init__(self, text: str):
         """
@@ -40,12 +40,12 @@ class UnknownError(Error):
 
 
 class InsufficientFundsException(Error):
-    """Недостаточно средств для совершения операции."""
+    """Insufficient funds to complete the transaction."""
     pass
 
 
 class TooManyRequests(Error):
-    """Недостаточно средств для совершения операции."""
+    """The server received too many requests."""
     pass
 
 
@@ -63,5 +63,5 @@ class BadGatewayError(Error):
 
 
 class BadRequestError(Error):
-    """Неправильный вызов метода."""
+    """A incorrect method call occured."""
     pass
