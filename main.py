@@ -42,7 +42,7 @@ async def orders_loop():
                 logger.debug('There is not enough balance available to place orders, we postpone analytics')
                 await asyncio.sleep(60 * 5)
         except Exception as e:
-            logger.error(f' Failed to update database of orders: {e}. Sleep for 30 seconds.')
+            logger.error(f' Failed to update database of orders: {e}. Sleep for 5 seconds.')
             await asyncio.sleep(5)
 
 
@@ -53,7 +53,7 @@ async def history_loop():
             await history.save_skins()
             await asyncio.sleep(60*15)
         except Exception as e:
-            logger.error(f' Failed to fetch history: {e}. Sleep for 10 seconds.')
+            logger.error(f' Failed to fetch history: {e}. Sleep for 30 seconds.')
             await asyncio.sleep(30)
 
 
@@ -63,7 +63,7 @@ async def add_to_sell_loop():
             await offers.add_to_sell()
             await asyncio.sleep(60*10)
         except Exception as e:
-            logger.error(f' Failed to list skin/item for sale: {e}. Sleep for 10 seconds.')
+            logger.error(f' Failed to list skin/item for sale: {e}. Sleep for 30 seconds.')
             await asyncio.sleep(30)
 
 
@@ -73,7 +73,7 @@ async def update_offers_loop():
             await offers.update_offers()
             await asyncio.sleep(5)
         except Exception as e:
-            logger.error(f' Failed to update sellable skins/items: {e}. Sleep for 10 seconds.')
+            logger.error(f' Failed to update sellable skins/items: {e}. Sleep for 30 seconds.')
             await asyncio.sleep(30)
 
 
