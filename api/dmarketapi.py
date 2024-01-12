@@ -128,14 +128,17 @@ class DMarketApi:
     async def get_money_loop(self) -> None:
         while True:
             try:
-                # logger.debug('get money_loop')
+                logger.debug('get money_loop')
                 await self.get_balance()
+                logger.debug('get money_loop sleep')
                 await asyncio.sleep(60*5)
             except KeyboardInterrupt:
                 break
             except CancelledError:
                 break
-            except Exception:
+            except Exception as e:
+                logger.error(f' Failed to get balance: {e}. Sleep for 5 seconds.')
+                await asyncio.sleep(5)
                 continue
         return
 
@@ -298,15 +301,14 @@ class DMarketApi:
         response = await self.api_call(url, method, headers, params=params)
         return UserItems(**response)
 
-    async def user_offers_closed(self, game: Games = Games.RUST, 
-                            sort_type: str = 'UserOffersSortTypeDateNewestFirst', limit: str = '20'):
+    async def user_offers_closed(self, game: Games = Games.RUST, limit: str = '20'):
         method = 'GET'
         url_path = '/marketplace-api/v1/user-offers/closed'
-        params = {'GameId': game.value, 'Limit': limit, 'SortType': sort_type}
+        params = {'GameId': game.value, 'Limit': limit, 'OrderDir': "desc"}
         headers = self.generate_headers(method, url_path, params)
         url = API_URL + url_path
         response = await self.api_call(url, method, headers, params=params)
-        return UserItems(**response)
+        return ClosedOffers(**response)
 
     async def user_offers_create(self, body: CreateOffers):
         method = 'POST'
