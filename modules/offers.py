@@ -26,7 +26,7 @@ class History:
         buy = [SellOffer(AssetID=i.AssetID, buyPrice=i.Price.Amount) for i in buy]
         sold = []
         for game in GAMES:
-            sell = await self.bot.user_offers(status='OfferStatusSold', game=game, limit='100')
+            sell = await self.bot.user_offers_closed(game=game, limit='100')
             sell = sell.Items
             sold += sell
 
