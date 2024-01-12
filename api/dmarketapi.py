@@ -145,12 +145,12 @@ class DMarketApi:
     # MARKET METHODS
     # ------------------------------------------------------------------
 
-    async def last_sales(self, item_name: str, game: Games = Games.CS, currency: str = 'USD') -> LastSales:
+    async def last_sales(self, item_name: str, game: Games = Games.RUST) -> LastSales:
         """Method for receiving and processing a response for recent sales."""
 
         method = 'GET'
-        params = {'GameID': game.value, 'Title': item_name, 'Currency': currency}
-        url_path = '/marketplace-api/v1/last-sales'
+        params = {'gameId': game.value, 'title': item_name}
+        url_path = '/trade-aggregator/v1/last-sales'
         headers = self.generate_headers(method, url_path, params)
         url = API_URL_TRADING + url_path
         response = await self.api_call(url, method, headers, params)
