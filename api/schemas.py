@@ -184,6 +184,12 @@ class ClosedOffers(BaseModel):
     Cursor: str = None
 
 
+class ClosedOffers(BaseModel):
+    Trades: List[ClosedOffer]
+    Total: str
+    Cursor: str = None
+
+
 class UserItems(BaseModel):
     Items: List[UserItem]
     Total: str

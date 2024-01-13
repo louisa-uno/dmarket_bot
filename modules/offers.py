@@ -19,13 +19,16 @@ class History:
             return [i for i in skins if not i.sellTime]
         return list()
 
-    async def save_skins(self):
+        async def save_skins(self):
         buy = await self.bot.closed_targets(limit='100')
         buy = buy.Trades
+        print(f"Buys: {len(buy)}")
         print(f"Buys: {len(buy)}")
         buy = [SellOffer(AssetID=i.AssetID, buyPrice=i.Price.Amount) for i in buy]
         sold = []
         for game in GAMES:
+            sell = await self.bot.user_offers_closed(game=game, limit='100')
+            sell = sell.Trades
             sell = await self.bot.user_offers_closed(game=game, limit='100')
             sell = sell.Trades
             sold += sell

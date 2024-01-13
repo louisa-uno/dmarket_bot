@@ -313,6 +313,15 @@ class DMarketApi:
         response = await self.api_call(url, method, headers, params=params)
         return ClosedOffers(**response)
 
+    async def user_offers_closed(self, game: Games = Games.RUST, limit: str = '20'):
+        method = 'GET'
+        url_path = '/marketplace-api/v1/user-offers/closed'
+        params = {'GameId': game.value, 'Limit': limit, 'OrderDir': "desc"}
+        headers = self.generate_headers(method, url_path, params)
+        url = API_URL + url_path
+        response = await self.api_call(url, method, headers, params=params)
+        return ClosedOffers(**response)
+
     async def user_offers_create(self, body: CreateOffers):
         method = 'POST'
         url_path = '/marketplace-api/v1/user-offers/create'
