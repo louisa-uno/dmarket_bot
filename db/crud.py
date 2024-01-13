@@ -86,7 +86,8 @@ class SelectSkinOffer:
         print('select_not_sold')
         skins = SkinOffer.select().where(SkinOffer.sellTime == None)
         print(f"not_sold length: {len(skins)}")
-        # for s in skins:
+        for s in skins:
+            print(s.buyPrice)
         #     print(s.AssetID)
         #     print(s.title)
         #     print(s.game)
@@ -96,7 +97,7 @@ class SelectSkinOffer:
         
         try:
             print("creating selloffers from skinoffer list")
-            sell_offers = [SellOffer(AssetID=s.AssetID) for s in skins]
+            sell_offers = [SellOffer(AssetID=s.AssetID, buyPrice=s.buyPrice) for s in skins]
             for s in sell_offers:
                 print(s)
             return sell_offers

@@ -100,7 +100,7 @@ async def main_loop():
     tasks = await asyncio.gather(
             add_to_sell_loop(),
             # bot.get_money_loop(),
-            # history_loop(),
+            history_loop(),
             # orders_loop(),
             # add_to_sell_loop(),
             # update_offers_loop(),

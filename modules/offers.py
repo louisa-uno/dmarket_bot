@@ -29,6 +29,7 @@ class History:
         buy = [SellOffer(OfferID=i.OfferID, TargetID=i.TargetID, AssetID=i.AssetID, buyPrice=float(i.Price.Amount), Amount=i.Amount) for i in buy]
         logger.debug("Sell offers created successfully")
         logger.debug(f"SellOffers: {len(buy)}")
+        logger.debug(f"Buy #1: {buy[0]}")
         sold = []
         for game in GAMES:
             logger.debug(f"Game: {game}")
@@ -45,8 +46,9 @@ class History:
         buy_asset_ids = [s.AssetID for s in SelectSkinOffer.select_all()]
         logger.debug(f"Buy asset ids: {len(buy_asset_ids)}")
         for b in buy:
-            # logger.debug(f"Buy: {b}")
+            logger.debug(f"Buy: {b}")
             if b.AssetID not in buy_asset_ids:
+                logger.debug(f"Adding skin: {b}")
                 SelectSkinOffer.create_skin(b)
         skins = self.skins_db()
         logger.debug(f"Skins: {len(skins)}")
