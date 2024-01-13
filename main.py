@@ -100,7 +100,7 @@ async def main_loop():
             bot.get_money_loop(),
             # delete_offers_loop(),
             history_loop(),
-            orders_loop(),
+            # orders_loop(),
             add_to_sell_loop(),
             update_offers_loop(),
             create_pre_base(),
