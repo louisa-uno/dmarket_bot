@@ -77,14 +77,13 @@ async def update_offers_loop():
         try:
             await offers.update_offers()
             logger.debug('Update offers loop sleep')
-            await asyncio.sleep(5)
+            await asyncio.sleep(60*15)
         except Exception as e:
             logger.error(f' Failed to update sellable skins/items: {e}. Sleep for 30 seconds.')
             await asyncio.sleep(30)
 
 
 async def delete_offers_loop():
-    return
     while True:
         try:
             logger.debug('Delete offers loop sleep')
@@ -98,13 +97,13 @@ async def delete_offers_loop():
 
 async def main_loop():
     tasks = await asyncio.gather(
-            add_to_sell_loop(),
-            # bot.get_money_loop(),
+            bot.get_money_loop(),
+            # delete_offers_loop(),
             history_loop(),
-            # orders_loop(),
-            # add_to_sell_loop(),
-            # update_offers_loop(),
-            # create_pre_base(),
+            orders_loop(),
+            add_to_sell_loop(),
+            update_offers_loop(),
+            create_pre_base(),
             return_exceptions=True
             )
     return tasks

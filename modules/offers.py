@@ -131,16 +131,16 @@ class Offers:
         return order_price
 
     async def update_offers(self):
-        on_sell = sorted([i for i in SelectSkinOffer.select_not_sell() if i.OfferID],
+        logger.debug('Update offers')
+        on_sale = sorted([i for i in SelectSkinOffer.select_not_sell() if i.OfferID],
                         key=lambda x: x.title)
-
+        logger.debug(f'On sale: {len(on_sale)}')
         # names = [i.title for i in on_sell]
         # agr = await self.bot.agregated_prices(names=names, limit=len(names))
         items_to_update = list()
-
-        for i in on_sell:
-            itemid = OfferDetails(items=[i.AssetID])
-            details = await self.bot.user_offers_details(body=itemid)
+        for i in on_sale:
+            item_id = OfferDetails(items=[i.AssetID])
+            details = await self.bot.user_offers_details(body=item_id)
             best_price = details.objects[0].minListedPrice.amount / 100
             if i.sellPrice != best_price:
                 max_sell_price = i.buyPrice * (1 + self.max_percent / 100 + i.fee / 100)
@@ -154,7 +154,7 @@ class Offers:
 
         updated = await self.bot.user_offers_edit(EditOffers(Offers=items_to_update))
         for i in updated.Result:
-            for j in on_sell:
+            for j in on_sale:
                 if i.EditOffer.AssetID == j.AssetID:
                     j.sellPrice = i.EditOffer.Price.Amount
                     j.OfferID = i.NewOfferID
