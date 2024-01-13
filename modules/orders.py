@@ -175,7 +175,7 @@ class OrderAnalytics:
         skins = []
         for game in GAMES:
             skins += [i for i in SelectSkin.select_all() if self.min_price < i.avg_price < self.max_price
-                      and i.game == game.value]
+                    and i.game == game.value]
         logger.info(f'SKINS {len(skins)}')
         if skins:
             skins = self.popularity_control(skins)
@@ -227,11 +227,11 @@ class Orders:
             offer = offer.objects[0]
             price = LastPrice(Currency='USD', Amount=item.bestOrder/100)
             attributes = [TargetAttributes(Name='name', Value=offer.extra.name),
-                          TargetAttributes(Name='title', Value=offer.title),
-                          TargetAttributes(Name='category', Value=offer.extra.category),
-                          TargetAttributes(Name='gameId', Value=offer.gameId),
-                          TargetAttributes(Name='categoryPath', Value=offer.extra.categoryPath),
-                          TargetAttributes(Name='image', Value=offer.image)]
+                        TargetAttributes(Name='title', Value=offer.title),
+                        TargetAttributes(Name='category', Value=offer.extra.category),
+                        TargetAttributes(Name='gameId', Value=offer.gameId),
+                        TargetAttributes(Name='categoryPath', Value=offer.extra.categoryPath),
+                        TargetAttributes(Name='image', Value=offer.image)]
             if offer.extra.exterior:
                 attributes.append(TargetAttributes(Name='exterior', Value=offer.extra.exterior))
             target = CreateTarget(Amount='1', Price=price, Attributes=attributes)

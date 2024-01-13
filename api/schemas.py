@@ -149,6 +149,17 @@ class Offer(BaseModel):
     CreatedDate: str
 
 
+class ClosedOffer(BaseModel):
+    OfferID: str
+    TargetID: str
+    AssetID: str
+    Price: LastPrice
+    Amount: int
+    Title: str
+    Fee : dict
+    OfferCreatedAt: str
+    OfferClosedAt: str
+
 class UserItem(BaseModel):
     AssetID: str
     VariantID: str
@@ -165,6 +176,12 @@ class UserItem(BaseModel):
     Fee: LastPrice = None
     MarketPrice: LastPrice = None
     ClassID: str
+
+
+class ClosedOffers(BaseModel):
+    Trades: List[ClosedOffer]
+    Total: str
+    Cursor: str = None
 
 
 class UserItems(BaseModel):
@@ -226,6 +243,9 @@ class SkinHistory(LastSales):
     title: str
     avg_price: float
     update_time: datetime
+    class Config:
+        orm_mode = True
+        from_attributes = True
 
     class Config:
         orm_mode = True
@@ -252,7 +272,8 @@ class SellOffer(BaseModel):
     fee: int = 7
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+        
 
 
 class CumulativePrice(BaseModel):

@@ -6,3 +6,4 @@ __pycache__/
 credentials.py
 test_logger.py
 test.py
+.env

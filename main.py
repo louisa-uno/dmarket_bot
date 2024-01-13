@@ -20,6 +20,7 @@ async def create_pre_base():
         logger.info('Skin database processing')
         try:
             await skin_base.update()
+            logger.debug('Skin database sleep')
             await asyncio.sleep(skin_base.repeat)
         except Exception as e:
             logger.exception(f' Failed to update primary: {e}. Sleep for 5 seconds.')
@@ -34,6 +35,7 @@ async def orders_loop():
             logger.debug(f'{bot.balance}')
             if bot.balance > orders.order_list.min_price + BuyParams.STOP_ORDERS_BALANCE:
                 await orders.update_orders()
+                logger.debug(f'orders loop sleep')
                 await asyncio.sleep(5)
             else:
                 targets = await orders.bot.user_targets(limit='1000')
@@ -51,6 +53,7 @@ async def history_loop():
         logger.debug('History loop')
         try:
             await history.save_skins()
+            logger.debug('History loop sleep')
             await asyncio.sleep(60*15)
         except Exception as e:
             logger.error(f' Failed to fetch history: {e}. Sleep for 30 seconds.')
@@ -60,7 +63,9 @@ async def history_loop():
 async def add_to_sell_loop():
     while True:
         try:
+            logger.debug('Add to sell loop')
             await offers.add_to_sell()
+            logger.debug('Add to sell loop sleep')
             await asyncio.sleep(60*10)
         except Exception as e:
             logger.error(f' Failed to list skin/item for sale: {e}. Sleep for 30 seconds.')
@@ -71,6 +76,7 @@ async def update_offers_loop():
     while True:
         try:
             await offers.update_offers()
+            logger.debug('Update offers loop sleep')
             await asyncio.sleep(5)
         except Exception as e:
             logger.error(f' Failed to update sellable skins/items: {e}. Sleep for 30 seconds.')
@@ -80,7 +86,9 @@ async def update_offers_loop():
 async def delete_offers_loop():
     while True:
         try:
+            logger.debug('Delete offers loop sleep')
             await asyncio.sleep(60*60*24*2)
+            logger.debug('Delete offers loop')
             await offers.delete_all_offers()
         except Exception as e:
             logger.error(f'Failed to delete offers: {e}')
@@ -94,7 +102,8 @@ async def main_loop():
             orders_loop(),
             add_to_sell_loop(),
             update_offers_loop(),
-            create_pre_base(), return_exceptions=True
+            create_pre_base(),
+            return_exceptions=True
             )
     return tasks
 

@@ -21,18 +21,20 @@ class History:
 
     async def save_skins(self):
         buy = await self.bot.closed_targets(limit='100')
-
         buy = buy.Trades
+        print(f"Buys: {len(buy)}")
         buy = [SellOffer(AssetID=i.AssetID, buyPrice=i.Price.Amount) for i in buy]
         sold = []
         for game in GAMES:
-            sell = await self.bot.user_offers(status='OfferStatusSold', game=game, limit='100')
-            sell = sell.Items
+            sell = await self.bot.user_offers_closed(game=game, limit='100')
+            sell = sell.Trades
             sold += sell
+            
+        print(f"Sells: {len(sold)}")
 
-        sell = [SellOffer(AssetID=i.AssetID, OfferID=i.Offer.OfferID,
-                          sellPrice=i.Offer.Price.Amount, sellTime=datetime.datetime.now(),
-                          title=i.Title, game=i.GameID) for i in sold]
+        sell = [SellOffer(AssetID=i.AssetID, OfferID=i.OfferID,
+                        sellPrice=i.Price.Amount, sellTime=i.OfferClosedAt,
+                        title=i.Title, game='rust') for i in sold]
         buy_asset_ids = [s.AssetID for s in SelectSkinOffer.select_all()]
         for b in buy:
             if b.AssetID not in buy_asset_ids:
@@ -58,10 +60,13 @@ class Offers:
         self.min_percent = SellParams.MIN_PERCENT
 
     async def add_to_sell(self):
+        logger.debug('Add to sell')
         skins = SelectSkinOffer.select_not_sell()
+        logger.debug(f'Add to sell complete: {skins}')
         inv_skins = []
         invent = []
         for game in GAMES:
+            logger.debug(f'Getting items for game: {game}')
             inv = await self.bot.user_items(game=game)
             inv_skins += inv.objects
         for i in inv_skins:
@@ -78,7 +83,7 @@ class Offers:
                     i.sellPrice = price
             try:
                 create_offers.append(CreateOffer(AssetID=i.AssetID,
-                                                 Price=LastPrice(Currency='USD', Amount=round(i.sellPrice, 2))))
+                                                Price=LastPrice(Currency='USD', Amount=round(i.sellPrice, 2))))
             except TypeError:
                 pass
 
@@ -104,7 +109,7 @@ class Offers:
 
     async def update_offers(self):
         on_sell = sorted([i for i in SelectSkinOffer.select_not_sell() if i.OfferID],
-                         key=lambda x: x.title)
+                        key=lambda x: x.title)
 
         # names = [i.title for i in on_sell]
         # agr = await self.bot.agregated_prices(names=names, limit=len(names))
@@ -122,7 +127,7 @@ class Offers:
 
                     i.sellPrice = price
                     items_to_update.append(EditOffer(OfferID=i.OfferID, AssetID=i.AssetID,
-                                                     Price=LastPrice(Currency='USD', Amount=round(i.sellPrice, 2))))
+                                                    Price=LastPrice(Currency='USD', Amount=round(i.sellPrice, 2))))
 
         updated = await self.bot.user_offers_edit(EditOffers(Offers=items_to_update))
         for i in updated.Result:
