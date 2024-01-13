@@ -20,33 +20,43 @@ class History:
         return list()
 
     async def save_skins(self):
+        logger.debug('Save skins')
         buy = await self.bot.closed_targets(limit='100')
+        logger.debug(f"Buys: {len(buy.Trades)}")
         buy = buy.Trades
-        print(f"Buys: {len(buy)}")
-        print(f"Buys: {len(buy)}")
-        buy = [SellOffer(AssetID=i.AssetID, buyPrice=i.Price.Amount) for i in buy]
+        logger.debug(f"Buy #1: {buy[0]}")
+        logger.debug(f"Buys: {len(buy)}")
+        buy = [SellOffer(OfferID=i.OfferID, TargetID=i.TargetID, AssetID=i.AssetID, buyPrice=float(i.Price.Amount), Amount=i.Amount) for i in buy]
+        logger.debug("Sell offers created successfully")
+        logger.debug(f"SellOffers: {len(buy)}")
         sold = []
         for game in GAMES:
-            sell = await self.bot.user_offers_closed(game=game, limit='100')
-            sell = sell.Trades
+            logger.debug(f"Game: {game}")
             sell = await self.bot.user_offers_closed(game=game, limit='100')
             sell = sell.Trades
             sold += sell
-            
-        print(f"Sells: {len(sold)}")
-
+        logger.debug(f"Sells: {len(sold)}")
         sell = [SellOffer(AssetID=i.AssetID, OfferID=i.OfferID,
                         sellPrice=i.Price.Amount, sellTime=i.OfferClosedAt,
                         title=i.Title, game='rust') for i in sold]
+        logger.debug(f"Sells: {len(sell)}")
+        # for s in sell:
+        #     logger.debug(f"sell: {s}")
         buy_asset_ids = [s.AssetID for s in SelectSkinOffer.select_all()]
+        logger.debug(f"Buy asset ids: {len(buy_asset_ids)}")
         for b in buy:
+            # logger.debug(f"Buy: {b}")
             if b.AssetID not in buy_asset_ids:
                 SelectSkinOffer.create_skin(b)
         skins = self.skins_db()
+        logger.debug(f"Skins: {len(skins)}")
 
         for s in skins:
             for i in sell:
+                # logger.debug(f"s.AssetID: {s.AssetID} i.AssetID: {i.AssetID}")
+                # logger.debug(f"{s.AssetID == i.AssetID}")
                 if s.AssetID == i.AssetID:
+                    logger.debug(f"Skin: {s}")
                     s.title = i.title
                     s.sellPrice = i.sellPrice * (1 - s.fee / 100)
                     s.OfferID = i.OfferID
@@ -65,19 +75,27 @@ class Offers:
     async def add_to_sell(self):
         logger.debug('Add to sell')
         skins = SelectSkinOffer.select_not_sell()
-        logger.debug(f'Add to sell complete: {skins}')
+        logger.debug(f'Add to sell (1/2) complete')
+        logger.debug(f"First skin: {skins[0]}")
+        # logger.debug(f'Skins: {len(skins)}')
         inv_skins = []
         invent = []
         for game in GAMES:
             logger.debug(f'Getting items for game: {game}')
             inv = await self.bot.user_items(game=game)
             inv_skins += inv.objects
+        logger.debug(f'Add to sell (2/2) complete')
+        logger.debug(f"First inv skin: {inv_skins[0]}\n\n")
+        # logger.debug(f'Inv skins: {len(inv_skins)}')
         for i in inv_skins:
             fee = 7
             if 'custom' in i.fees['dmarket']['sell']:
                 fee = int(i.fees['dmarket']['sell']['custom']['percentage'])
             if i.inMarket:
                 invent.append(SellOffer(AssetID=i.itemId, title=i.title, game=i.gameId, fee=fee))
+        logger.debug(f'Invent: {len(invent)}')
+        for i in invent:
+            logger.debug(f"i: {i}")
         create_offers = []
         for i in invent:
             for j in skins:

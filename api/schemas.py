@@ -21,12 +21,12 @@ class LastPrice(BaseModel):
 
 
 class LastSale(BaseModel):
-    Date: datetime
-    Price: LastPrice
+    date: datetime
+    price: str
 
 
 class LastSales(BaseModel):
-    LastSales: List[LastSale]
+    sales: List[LastSale]
 
 
 class SaleHistory(BaseModel):

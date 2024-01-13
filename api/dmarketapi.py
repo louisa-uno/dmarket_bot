@@ -230,6 +230,7 @@ class DMarketApi:
         return UserTargets(**response)
 
     async def closed_targets(self, limit: str = '100', order_dir: str = 'desc') -> ClosedTargets:
+        logger.debug(f"closed_targets()")
         method = 'GET'
         url_path = '/marketplace-api/v1/user-targets/closed'
         params = {'Limit': limit, 'OrderDir': order_dir}
@@ -239,6 +240,8 @@ class DMarketApi:
         logger.debug(f"{params}")
         response = await self.api_call(url, method, headers, params)
         # logger.debug(f"{response}")
+        logger.debug(f"closed_targets() count: {len(response['Trades'])}")
+        logger.debug(f"{response['Trades'][0].items()}")
         return ClosedTargets(**response)
 
     async def create_target(self, body: CreateTargets):

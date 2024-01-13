@@ -57,16 +57,16 @@ class SkinBase:
             try:
                 logger.debug(f'Game: {game}. Get history for {i.title}')
                 history = await self.api.last_sales(i.title, game=game)
-                if len(history.LastSales) == 20:
-                    logger.debug(f'History: {len(history.LastSales)}')
-                    prices = [i.Price.Amount for i in history.LastSales]
+                if len(history.sales) == 20:
+                    logger.debug(f'History: {len(history.sales)}')
+                    prices = [float(i.price) for i in history.sales]
                     avg_price = sum(prices)
                     count_prices = len(prices)
                     avg_price = avg_price / count_prices
                     if min_p <= avg_price <= max_p:
                         logger.debug(f"Avg price: {avg_price}")
                         try:
-                            sk = SkinHistory(title=i.title, game=game.value, LastSales=history.LastSales,
+                            sk = SkinHistory(title=i.title, game=game.value, LastSales=history.sales,
                                             avg_price=avg_price, update_time=datetime.datetime.now())
                             s.append(sk)
                             logger.debug(f"Length of skins: {len(s)}")

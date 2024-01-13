@@ -83,10 +83,26 @@ class SelectSkinOffer:
 
     @staticmethod
     def select_not_sell() -> List[SellOffer]:
-        print('select_not_sell')
+        print('select_not_sold')
         skins = SkinOffer.select().where(SkinOffer.sellTime == None)
-        print(f"select_not_sell length: {len(skins)}")
-        return [SellOffer.from_orm(s) for s in skins]
+        print(f"not_sold length: {len(skins)}")
+        # for s in skins:
+        #     print(s.AssetID)
+        #     print(s.title)
+        #     print(s.game)
+        #     print(s.OfferID)
+        #     print(s.sellTime)
+        #     print(s.sellPrice)
+        
+        try:
+            print("creating selloffers from skinoffer list")
+            sell_offers = [SellOffer(AssetID=s.AssetID) for s in skins]
+            for s in sell_offers:
+                print(s)
+            return sell_offers
+        except Exception as e:
+            print(f"Exception in select_not_sell: {e}")
+            raise e
 
     @staticmethod
     def select_all() -> List[SkinOffer]:

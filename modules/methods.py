@@ -4,7 +4,7 @@ from api.schemas import LastSale
 
 
 def mov_av_5(history: List[LastSale]) -> list:
-    prices = [i.Price.Amount for i in history]
+    prices = [float(i.price) for i in history]
     prices.reverse()
     mov_av = [i for i in list(sma(prices, 5))]
     mov_av.reverse()
