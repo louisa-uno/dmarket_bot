@@ -50,7 +50,7 @@ logger.configure(**logger_config)
 - `BAD_ITEMS` - a blacklist of words. If the word is included in the name of the item it won't be bought.
 
 ### BuyParams - configuration parameters for placing orders
-- `STOP_ORDERS_BALANCE = 1000` - Stop placing orders if the balance is 10 dollars less than the minimum order price
+- `STOP_ORDERS_BALANCE = 1000` - Stop placing orders if the balance is <= 10 dollars more than the minimum order price
 - `MIN_AVG_PRICE = 400` - The minimum average price for the last 20 purchases of an item in cents. Items with a lower won't be added to the skin database
 - `MAX_AVG_PRICE = 3500` - The maximum average price for the last 20 purchases of an item in cents. Items with a higher price will not be added to the skin database. 
 - `FREQUENCY = True` - `PROFIT_PERCENT = 6` or less, and the parameter `GOOD_POINTS_PERCENT = 50` or higher.
@@ -75,5 +75,5 @@ logger.configure(**logger_config)
 - `MIN_THRESHOLD = 3` - the maximum decrease in the price of your order from the price of the current one. Sets the price change boundaries for the order
 
 ### SellParams - configuration parameters for selling
-- `MIN_PERCENT = 4` - minimum profit percentage
-- `MAX_PERCENT = 12` - maximum profit percentage
+- `MIN_PERCENT = 7` - minimum profit percentage
+- `MAX_PERCENT = 15` - maximum profit percentage
