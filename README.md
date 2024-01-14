@@ -3,7 +3,7 @@ Bot for automatic trading on dmarket
 
 ### Setup:
 
-- git clone https://github.com/Cfomodz/dmarket_bot.git
+- git clone https://github.com/Luois45/dmarket_bot.git
 - cd dmarket_bot
 - Create a virtual environment python3 -m venv venv
 - Activate the virtual environment . venv/bin/activate
