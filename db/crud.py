@@ -1,7 +1,6 @@
 from typing import List
 from datetime import datetime
 from peewee import DoesNotExist
-
 from db.models import Skin, SkinOffer, db
 from api.schemas import SkinHistory, MarketOffer, SellOffer
 
@@ -41,8 +40,8 @@ class SelectSkin:
                 skin_to_create.append(Skin(**item.dict()))
         with db.atomic():
             Skin.bulk_update(skins_to_update,
-                             fields=[Skin.avg_price, Skin.LastSales, Skin.update_time],
-                             batch_size=500)
+                            fields=[Skin.avg_price, Skin.LastSales, Skin.update_time],
+                            batch_size=500)
         with db.atomic():
             Skin.bulk_create(skin_to_create, batch_size=500)
 
@@ -80,12 +79,31 @@ class SelectSkinOffer:
 
         with db.atomic():
             SkinOffer.bulk_update(skins, fields=[SkinOffer.title, SkinOffer.sellPrice,
-                                                 SkinOffer.sellTime, SkinOffer.OfferID])
+                                                SkinOffer.sellTime, SkinOffer.OfferID])
 
     @staticmethod
     def select_not_sell() -> List[SellOffer]:
+        # print('select_not_sold')
         skins = SkinOffer.select().where(SkinOffer.sellTime == None)
-        return [SellOffer.from_orm(s) for s in skins]
+        # print(f"not_sold length: {len(skins)}")
+        # for s in skins:
+        #     print(s.buyPrice)
+        #     print(s.AssetID)
+        #     print(s.title)
+        #     print(s.game)
+        #     print(s.OfferID)
+        #     print(s.sellTime)
+        #     print(s.sellPrice)
+        
+        try:
+            # print("creating selloffers from skinoffer list")
+            sell_offers = [SellOffer(AssetID=s.AssetID, buyPrice=s.buyPrice) for s in skins]
+            # for s in sell_offers:
+            #     print(s)
+            return sell_offers
+        except Exception as e:
+            print(f"Exception in select_not_sell: {e}")
+            raise e
 
     @staticmethod
     def select_all() -> List[SkinOffer]:

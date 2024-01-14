@@ -175,7 +175,7 @@ class OrderAnalytics:
         skins = []
         for game in GAMES:
             skins += [i for i in SelectSkin.select_all() if self.min_price < i.avg_price < self.max_price
-                      and i.game == game.value]
+                    and i.game == game.value]
         logger.info(f'SKINS {len(skins)}')
         if skins:
             skins = self.popularity_control(skins)
@@ -227,11 +227,11 @@ class Orders:
             offer = offer.objects[0]
             price = LastPrice(Currency='USD', Amount=item.bestOrder/100)
             attributes = [TargetAttributes(Name='name', Value=offer.extra.name),
-                          TargetAttributes(Name='title', Value=offer.title),
-                          TargetAttributes(Name='category', Value=offer.extra.category),
-                          TargetAttributes(Name='gameId', Value=offer.gameId),
-                          TargetAttributes(Name='categoryPath', Value=offer.extra.categoryPath),
-                          TargetAttributes(Name='image', Value=offer.image)]
+                        TargetAttributes(Name='title', Value=offer.title),
+                        TargetAttributes(Name='category', Value=offer.extra.category),
+                        TargetAttributes(Name='gameId', Value=offer.gameId),
+                        TargetAttributes(Name='categoryPath', Value=offer.extra.categoryPath),
+                        TargetAttributes(Name='image', Value=offer.image)]
             if offer.extra.exterior:
                 attributes.append(TargetAttributes(Name='exterior', Value=offer.extra.exterior))
             target = CreateTarget(Amount='1', Price=price, Attributes=attributes)
@@ -259,9 +259,9 @@ class Orders:
         for name in name_group:
             if len(name) > 1:
                 bad += name[1:]
-        await self.bot.delete_target(bad + targets_inactive.Items)
+        # await self.bot.delete_target(bad + targets_inactive.Items)
         for skin in new:
-            # logger.write(f'{skin.market_hash_name} {skin.best_order} {skin.min_price} {skin.max_price}')
+            logger.write(f'{skin.market_hash_name} {skin.best_order} {skin.min_price} {skin.max_price}')
             if self.bot.balance > skin.bestOrder:
                 for i in BAD_ITEMS:
                     if i in skin.title.lower():
@@ -269,6 +269,7 @@ class Orders:
                 if await self.check_offers(skin):
                     await self.create_order(skin)
         if good:
+            logger.debug(f'Good {len(good)}')
             for i in good:
                 for j in skins:
                     if i.Title == j.title:

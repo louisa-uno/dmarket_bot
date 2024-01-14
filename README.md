@@ -50,23 +50,23 @@ logger.configure(**logger_config)
 - `BAD_ITEMS` - a blacklist of words. If the word is included in the name of the item it won't be bought.
 
 ### BuyParams - configuration parameters for placing orders
-- `STOP_ORDERS_BALANCE = 1000` - Stop placing orders if the balance is 10 dollars less than the minimum order price
+- `STOP_ORDERS_BALANCE = 1000` - Stop placing orders if the balance is <= 10 dollars more than the minimum order price
 - `MIN_AVG_PRICE = 400` - The minimum average price for the last 20 purchases of an item in cents. Items with a lower won't be added to the skin database
 - `MAX_AVG_PRICE = 3500` - The maximum average price for the last 20 purchases of an item in cents. Items with a higher price will not be added to the skin database. 
 - `FREQUENCY = True` - `PROFIT_PERCENT = 6` or less, and the parameter `GOOD_POINTS_PERCENT = 50` or higher.
-- `MIN_PRICE = 300` - minimum average price. The order won't be placed below this price
-- `MAX_PRICE = 3000` - maximum average price. The order won't be placed above this price
+- `MIN_PRICE = 300` - minimum price. The order won't be placed below this price
+- `MAX_PRICE = 3000` - maximum price. The order won't be placed above this price
 
 - `PROFIT_PERCENT = 7` - 
-- `GOOD_POINTS_PERCENT = 50` - the minimum percentage of points in the history of the last 20 sales corresponding to the parameter `PROFIT_PERCENT = 7`. In this case, if less than 50 % of points were sold with a profit of less than 7 %, then an order for such an skin/item won't be placed
+- `GOOD_POINTS_PERCENT = 50` - the minimum percentage of points in the history of the last 20 sales corresponding to the parameter `PROFIT_PERCENT = 7`. In this case, if less than 50 % of points were sold with a profit of less than 7 %, then an order for such a skin/item won't be placed
 - `AVG_PRICE_COUNT = 7` - calculating the average price for the last 7 sales to form the estimated profit
-- `ALL_SALES = 100` - the minimum number of sales for the entire period, below the order won't be placed
+- `ALL_SALES = 100` - the minimum number of sales for the entire period, if sales are below this number, the order won't be placed
 - `DAYS_COUNT = 20` - at least `SALE_COUNT = 15` sales for `DAYS_COUNT = 20` days. Selection by popularity
 - `SALE_COUNT = 15` - at least `SALE_COUNT = 15` sales for `DAYS_COUNT = 20` days. Selection by popularity
 - `LAST_SALE = 2` - last sale is no older than LAST_SALE days ago
 - `FIRST_SALE = 15` - first purchase is no later than FIRST_SALE days ago
 
-- `MAX_COUNT_SELL_OFFERS = 30` - The maximum number of item sor sale. Above 30 the order won't be placed
+- `MAX_COUNT_SELL_OFFERS = 30` - The maximum number of items for sale. Above 30 the order won't be placed
 
 - `BOOST_PERCENT = 24` - remove up to 3 points that are 24 % higher than average price
 - `BOOST_POINTS = 3` - remove up to 3 points that are 24 % higher than average price
@@ -75,5 +75,5 @@ logger.configure(**logger_config)
 - `MIN_THRESHOLD = 3` - the maximum decrease in the price of your order from the price of the current one. Sets the price change boundaries for the order
 
 ### SellParams - configuration parameters for selling
-- `MIN_PERCENT = 4` - minimum profit percentage
-- `MAX_PERCENT = 12` - maximum profit percentage
+- `MIN_PERCENT = 7` - minimum profit percentage
+- `MAX_PERCENT = 15` - maximum profit percentage

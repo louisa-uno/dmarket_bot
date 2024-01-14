@@ -1,7 +1,7 @@
 from config import logger
 
 __all__ = ['Error', 'BadGatewayError', 'WrongResponseException', 'BadAPIKeyException', 'InsufficientFundsException',
-           'UnknownError', 'TooManyRequests', 'BadRequestError']
+            'UnknownError', 'TooManyRequests', 'BadRequestError']
 
 
 class Error(Exception):
